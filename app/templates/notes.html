@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>It's your notes</h1>
+{% if user %}
+<h3>Hello, {{user.nickname}}!</h3>
+{% else %}
+<h3>Hello, dear!</h3>
+{% endif %}
+{% for note in notes %}
+<div>
+    <p>Заметка сделана {{ note.date_created }}</p>
+    <p> Замечены:
+        {% for b in note.birds%}
+            b,
+        {% endfor %}
+    </p>
+    <p>{{ note.date }}, {{ note.time }}</p>
+    <p>{{ note.geo }}</p>
+</div>
+{% endfor %}
+{% endblock %}

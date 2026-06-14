@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+      <title> {{title}} </title>
+      <style>
+        textarea {
+        width: 70vw;
+        height: 30vh;
+        box-sizing: border-box;
+        }
+        .horizontal-list {
+          display: flex;
+          gap: 20px;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .nav-list li {
+            margin-right: 20px;
+        }
+        .nav-right {
+            margin-right: 0;
+            margin-left: auto;
+        }
+        a:hover {
+          color: #FFFFFF;
+          text-decoration: underline;
+        }
+
+        a.active, a:link.active, a:visited.active, a:hover.active {
+          color: #000000;
+          font-weight: 700;
+        }
+
+        a:visited {
+          color: #a3008d;
+          text-decoration: underline;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <header>
+     <nav>
+         <ul class="horizontal-list">
+           <li><a href="/">Главная</a></li>
+           <li><a href="{{ url_for('main.notes') }}">Мои заметки</a></li>
+           {% if user %}
+              <li class="nav-right"><a href="{{ url_for('main.logout') }}" class="button">Выйти</a></li>
+           {% else %}
+              <li class="nav-right"><a href="{{ url_for('main.login') }}" class="button">Войти с Google</a></li>
+           {% endif %}
+         </ul>
+     </nav>
+    </header>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+</html>

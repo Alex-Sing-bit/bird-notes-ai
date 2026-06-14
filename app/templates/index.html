@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  {% if user %}
+  <h1>Здравствуй, {{user.nickname}}!</h1>
+  <p>Добро пожаловать!</p>
+  {% else %}
+  <h1>Здравствуй, исследователь!</h1>
+  <p>Зарегистрируйся, чтобы сохранять свои заметки</p>
+  {% endif %}
+  <section>
+    <h2>Ваше наблюдение</h2>
+    <form action="" method="post" novalidate>
+        {{ form_obs.hidden_tag() }}
+        {{ form_obs.note_text }} <br>
+        {{ form_obs.submit }}
+    </form>
+  </section>
+  <section>
+      <h2>Новые заметки</h2>
+      <form action="" method="post" novalidate>
+          {{ form_note.hidden_tag() }}
+          <p>
+            {{ form_note.birds.label }}
+            {{ form_note.birds }}
+          </p>
+          <p>
+            {{ form_note.date.label }}
+            {{ form_note.date }}
+          </p>
+          <p>
+            {{ form_note.time.label }}
+            {{ form_note.time }}
+          </p>
+          <p>
+            {{ form_note.geo.label }}
+            {{ form_note.geo }}
+          </p>
+          <p>{{ form_note.submit() }}</p>
+      </form>
+  </section>
+</main>
+{% endblock %}
