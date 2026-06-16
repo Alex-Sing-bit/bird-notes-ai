@@ -1,12 +1,14 @@
 import os
 
+from chromadb.utils import embedding_functions
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from oauthlib.oauth2 import WebApplicationClient
-
 from config import GOOGLE_CLIENT_ID
+
+from chromadb_client import get_birds_collection, get_chroma_client
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -23,6 +25,10 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = 'main.login'
+
+    with app.app_context():
+        birds_collection = get_birds_collection()
+        app.config['CHROMA_COLLECTION'] = birds_collection
 
     from app import views
     app.register_blueprint(views.bp)
