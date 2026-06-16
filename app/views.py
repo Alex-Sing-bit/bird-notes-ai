@@ -12,6 +12,7 @@ from app import db, client
 from app.models import User, Note, Bird
 from config import GOOGLE_DISCOVERY_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 from app.forms import MakeNoteForm, NoteForm
+from search import find_bird
 
 bp = Blueprint('main', __name__)
 
@@ -53,8 +54,8 @@ def index():
                 return redirect(url_for('main.login'))
 
         elif 'obs_submit' in request.form and form_obs.validate_on_submit():
-            form_note.birds.data = form_obs.note_text.data
-            flash(f'Наблюдение скопировано в заметку: {form_obs.note_text.data}')
+            form_note.birds.data = find_bird(form_obs.note_text.data)
+            flash(f'{form_note.birds.data}')
 
     if current_user.is_authenticated:
         return render_template("index.html",
