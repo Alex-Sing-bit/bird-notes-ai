@@ -8,4 +8,4 @@ def find_bird(note):
     result = current_app.config['CHROMA_COLLECTION'].query(query_texts=[request], n_results=config.DEFAULT_SEARCH_RESULTS)
     print(result)
 
-    return str(result), str(current_app.config['CHROMA_COLLECTION'])
+    return dict(result)

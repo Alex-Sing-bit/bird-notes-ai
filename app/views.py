@@ -12,7 +12,7 @@ from app import db, client
 from app.models import User, Note, Bird
 from config import GOOGLE_DISCOVERY_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 from app.forms import MakeNoteForm, NoteForm
-from search import find_bird
+from llm_api_client import enhance_answer
 
 bp = Blueprint('main', __name__)
 
@@ -54,8 +54,13 @@ def index():
                 return redirect(url_for('main.login'))
 
         elif 'obs_submit' in request.form and form_obs.validate_on_submit():
-            form_note.birds.data = find_bird(form_obs.note_text.data)
-            flash(f'{form_note.birds.data}')
+            dict_b, result_birds = enhance_answer(form_obs.note_text.data)
+            dict_b = dict_b[1]
+            form_note.birds.data = dict_b['название']
+            form_note.date.data = dict_b['точная_дата']
+            form_note.time.data = dict_b['точное_время']
+
+            flash(f'{result_birds}')
 
     if current_user.is_authenticated:
         return render_template("index.html",
